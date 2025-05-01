@@ -16,12 +16,19 @@ export abstract class View<T> {
     }
 
     public update(model: T): void {
+        // t1 para iniciar a medição da performance 
+        const t1 = performance.now();
         let template = this.template(model);
         if (this.escapar) {
             template = template
                 .replace(/<script>[\s\S]*?<\/script>/, '');
         }
         this.elemento.innerHTML = template;
+         // t2 para finalizar a medição da performance
+         const t2 = performance.now();
+         // Para medir a diferença entre tempo final e inicial 
+         // (tempo/1000 para converter de ms para s)
+         console.log(`Tempo de execução do método update: ${(t2 - t1)/1000} segundos`);
     }
 
     protected abstract template(model: T): string;
