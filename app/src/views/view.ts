@@ -32,8 +32,8 @@ export abstract class View<T> {
      */
     // @inspect() //desta forma "inspect()" espera receber parâmetro do decorator, como inspect não recebe podemos substituir pela função direta "inspect"
     
-    @logarTempoDeExecucao(true) //true significa que vai ser em segundos
-    @inspect
+    // @logarTempoDeExecucao(true) //true significa que vai ser em segundos
+    // @inspect
     public update(model: T): void {
         //Comentado, pois vamos utilizar decorator logarTempoDeExecucao
         // t1 para iniciar a medição da performance 
