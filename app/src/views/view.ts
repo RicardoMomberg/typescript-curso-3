@@ -4,18 +4,20 @@ import { inspect } from "../decorators/inspect.js";
 export abstract class View<T> {
 
     protected elemento: HTMLElement;
-    private escapar = false;
+    // Comentado pois utilizamos o decorator escape
+    // private escapar = false;
 
-    constructor(seletor: string, escapar?: boolean) {
+    constructor(seletor: string /*, escapar?: boolean*/ /* Comentado pois utilizamos o decorator escape*/) {
         const elemento = document.querySelector(seletor);
         if (elemento) {
             this.elemento = elemento as HTMLElement;
         } else {
             throw Error(`Seletor ${seletor} não existe no DOM. Verifique`);
         }
-        if (escapar) {
-            this.escapar = escapar;
-        }
+        // Comentado pois utilizamos o decorator escape
+        // if (escapar) {
+        //     this.escapar = escapar;
+        // }
     }
 
     /**
@@ -28,18 +30,25 @@ export abstract class View<T> {
      * - Primeiro roda o código do `inspect` (log de parâmetros e retorno)
      * - Dentro dele, roda o `logarTempoDeExecucao` que mede o tempo
      */
-    @inspect()
+    // @inspect() //desta forma "inspect()" espera receber parâmetro do decorator, como inspect não recebe podemos substituir pela função direta "inspect"
+    
     @logarTempoDeExecucao(true) //true significa que vai ser em segundos
+    @inspect
     public update(model: T): void {
         //Comentado, pois vamos utilizar decorator logarTempoDeExecucao
         // t1 para iniciar a medição da performance 
         // const t1 = performance.now();
+
+
         let template = this.template(model);
-        if (this.escapar) {
-            template = template
-                .replace(/<script>[\s\S]*?<\/script>/, '');
-        }
+        // Comentado pois utilizamos o decorator escape
+        // if (this.escapar) {
+        //     template = template
+        //         .replace(/<script>[\s\S]*?<\/script>/, '');
+        // }
         this.elemento.innerHTML = template;
+
+
          //Comentado, pois vamos utilizar decorator logarTempoDeExecucao
          // t2 para finalizar a medição da performance
          //  const t2 = performance.now();
