@@ -1,4 +1,5 @@
 import { logarTempoDeExecucao } from "../decorators/logar-tempo-de-execucao.js";
+import { inspect } from "../decorators/inspect.js";
 
 export abstract class View<T> {
 
@@ -17,7 +18,18 @@ export abstract class View<T> {
         }
     }
 
-    @logarTempoDeExecucao()
+    /**
+     * Decorators são aplicados nesta ordem:
+     * 
+     * 1. Primeiro @logarTempoDeExecucao(true) é aplicado e modifica o método `update`
+     * 2. Depois @inspect() é aplicado sobre o método já decorado acima
+     * 
+     * Portanto, ao executar o método:
+     * - Primeiro roda o código do `inspect` (log de parâmetros e retorno)
+     * - Dentro dele, roda o `logarTempoDeExecucao` que mede o tempo
+     */
+    @inspect()
+    @logarTempoDeExecucao(true) //true significa que vai ser em segundos
     public update(model: T): void {
         //Comentado, pois vamos utilizar decorator logarTempoDeExecucao
         // t1 para iniciar a medição da performance 

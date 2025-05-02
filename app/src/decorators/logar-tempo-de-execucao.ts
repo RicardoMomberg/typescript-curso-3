@@ -1,4 +1,4 @@
-export function logarTempoDeExecucao() {
+export function logarTempoDeExecucao(emSegundos: boolean = false) {
     // Este é o decorator em si, que retorna uma função que modifica o método decorado
     return function(
         target: any,              // O alvo (a classe no qual o método está sendo decorado)
@@ -10,6 +10,12 @@ export function logarTempoDeExecucao() {
 
         // Substituímos o método original por uma nova função
         descriptor.value = function(...args: any[]) {
+            let divisor = 1;
+            let unidade = 'milisegundos';
+            if(emSegundos) {
+                divisor = 1000;
+                unidade = 'segundos';
+            }
             /**
              * O rest operator `...args` permite capturar todos os argumentos
              * passados para o método decorado como um array.
@@ -35,8 +41,7 @@ export function logarTempoDeExecucao() {
             const t2 = performance.now(); // Marca o fim da execução
 
             // Exibe o tempo total de execução do método no console
-            console.log(`${propertyKey}, tempo de execução: ${(t2 - t1)/1000} segundos`);
-
+            console.log(`${propertyKey}, tempo de execução: ${(t2 - t1)/divisor} ${unidade}`);
             retorno; // Retorna o resultado original do método
         };
 
