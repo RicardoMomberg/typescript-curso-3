@@ -5,6 +5,7 @@ import { DiasDaSemana } from '../enums/dias-da-semana.js';
 import { Negociacao } from '../models/negociacao.js';
 import { Negociacoes } from '../models/negociacoes.js';
 import { NegociacoesService } from '../services/negociacoes-service.js';
+import { imprimir } from '../utils/imprimir.js';
 import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 
@@ -50,6 +51,23 @@ export class NegociacaoController {
         }
 
         this.negociacoes.adiciona(negociacao);
+        //console.log(negociacao)
+
+        // console.log comentado pois aplicamos ele em negociacao.ts no método paraTexto
+        // console.log(`
+        //     Data: ${negociacao.data},
+        //     Quantidade: ${negociacao.quantidade},
+        //     Valor: ${negociacao.valor}
+        // `);
+
+        // console.log comentado pois aplicamos ele em negociacoes.ts no método paraTexto
+        // console.log(JSON.stringify(this.negociacoes, null, 2));
+        
+        // Comentados os 2 console.log pois utilizamso aqui a função imprimir que criamos em imprimir.ts
+        // console.log(negociacao.paraTexto());
+        // console.log(this.negociacoes.paraTexto());
+        
+        imprimir(negociacao, this.negociacoes);
         this.limparFormulario();
         this.atualizaView();
         //Comentado, pois vamos utilizar decorator logarTempoDeExecucao
@@ -79,6 +97,13 @@ export class NegociacaoController {
 
         this.negociacoesService
             .obterNegociacoesDoDia()
+            .then(negociacoesDeHoje => {
+                return negociacoesDeHoje.filter(negociacaoDeHoje => {
+                    return !this.negociacoes
+                        .lista()
+                        .some(negociacao => negociacao.ehIgual(negociacaoDeHoje))
+                });
+            })
             .then(negociacoesDeHoje => {
                 for(let negociacao of negociacoesDeHoje) {
                     this.negociacoes.adiciona(negociacao);

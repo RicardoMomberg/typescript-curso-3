@@ -7,7 +7,9 @@
         "removeComments": true,
         "strictNullChecks": true,
         "moduleResolution": "node",
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        // Para debugar o código vamos usar sourceMap (usado somente em ambiente de desenvolvimento, nunca em produção)
+        "sourceMap": true 
     },
     "include": ["app/src/**/*"]
 }
